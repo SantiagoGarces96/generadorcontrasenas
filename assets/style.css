@@ -7,12 +7,13 @@
 
 body {
     background: linear-gradient(#1354A5 0%, #041832 33.33%, #041832 66.67%, #01080E 100%); 
-    height: 100vh;
+    min-height: 100vh;
     display: flex; 
     align-items: center;
     justify-content: center;
     position: relative;
     font-family: 'Inter', sans-serif;
+    padding: 1rem;
 }
 
 body::before {
@@ -30,45 +31,51 @@ body::before {
 }
 
 .container {
-    width: 80%;
+    width: 90%;
+    max-width: 1200px;
     min-height: 50vh;
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
     border-radius: 24px;
     border: 1px solid black;
     box-shadow: 4px 4px 20px 0px rgba(1, 8, 14, 0.15);
     background-image: url("img/Ruido.png");
-    background-size: 100% 100%;
+    background-size: cover;
+    background-position: center;
     position: relative;
     overflow: hidden;
+    padding: 2rem;
 }
 
 .container__contenido {
     display: flex;
     align-items: center;
-    position: relative;
+    justify-content: center;
+    flex-direction: column;
     width: 100%;
 }
 
 .container__informacion {
-    flex: 1;
-    padding: 3rem;
+    width: 100%;
+    padding: 1rem;
 }
 
 h1 {
     font-family: 'Chakra Petch', sans-serif;
-    font-size: 72px;
+    font-size: 2.5rem;
     font-style: normal;
     font-weight: 700;
-    line-height: 100%;
-    padding: 2rem 0;
+    line-height: 1.2;
+    text-align: center;
+    padding: 1rem 0;
 }
 
 .container__texto {
     margin: 12px 0;
     display: flex;
     flex-direction: column;
+    align-items: center;
 }
 
 .container__texto-black {
@@ -79,90 +86,98 @@ h1 {
 .container__campo {
     display: flex;
     align-items: center;  
-    margin-bottom: 12px;
-    margin: 30px 0;
-    gap: 2rem;  
+    margin: 1rem 0;
+    gap: 1rem;  
+    flex-wrap: wrap;
+    justify-content: center;
 }
 
 .texto__parrafo {
     color: #FFF;
     font-family: 'Inter';
-    font-size: 32px;
+    font-size: 1rem;
     font-style: normal;
     font-weight: 400;
     line-height: normal;
-    margin-left: 10px;  
+    margin: 0.5rem 0;  
 }
 
 .container__input {
-    width: 350px;
-    height: 72px;
-    border-radius: 16px;
+    width: 100%;
+    max-width: 300px;
+    height: 3rem;
+    border-radius: 8px;
     background-color: #FFF;
     border: none;
     color: #535353;
-    padding: 2rem;
-    font-size: 24px;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
     font-weight: 700;
     font-family: 'Inter', sans-serif;
 }
 
-.boton{
+.boton,
+.boton_limpiar {
     color: white;
-    font-size: 1.5rem;
+    font-size: 1rem;
     border: none;
-    background-color: green;
-    padding: 1rem 1.5rem;
-    border-radius: 16px;
-    width: 243px;
-    height: 72px;
-    box-shadow: 0px 0px 20px 0px rgba(32, 31, 31);
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    width: 100%;
+    max-width: 150px;
+    height: 3rem;
+    box-shadow: 0px 0px 10px 0px rgba(32, 31, 31, 0.5);
     cursor: pointer;
     transition: background-color 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.boton {
+    background-color: #28a745;
 }
 
 .boton:hover {
-    background-color: darkgreen;
+    background-color: #218838;
 }
 
-.boton_limpiar{
-    color: white;
-    font-size: 1.5rem;
-    border: none;
-    background-color: red;
-    padding: 1rem 1.5rem;
-    border-radius: 16px;
-    width: 243px;
-    height: 72px;
-    box-shadow: 0px 0px 20px 0px rgba(32, 31, 31);
-    cursor: pointer;
-    transition: background-color 0.3s;
+.boton_limpiar {
+    background-color: #dc3545;
 }
 
 .boton_limpiar:hover {
-    background-color: darkred;
+    background-color: #c82333; 
 }
 
 .container__contrasena {
-    width: 496px;
-    height: 72px;
-    border-radius: 16px;
+    width: 100%;
+    max-width: 400px;
+    height: 3rem;
+    border-radius: 8px;
     background-color: #FFF;
     border: none;
     color: #1875E8;
-    margin: 50px 0;
-    padding: 2rem;
-    font-size: 24px;
+    margin: 1rem 0;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
     font-weight: 700;
     font-family: 'Inter', sans-serif;
+    text-align: center;
 }
 
 #check-icon {
     display: none;
     color: green;
-    margin-left: 10px;
+    margin-left: 0.5rem;
     vertical-align: middle;
-    font-size: 2rem;
+    font-size: 1.5rem;
+}
+
+#seguridad {
+    margin-top: 1rem;
+    font-size: 1rem;
+    text-align: center;
 }
 
 .seguridad-fuerte {
@@ -175,4 +190,109 @@ h1 {
 
 .seguridad-debil {
     color: red !important;
+}
+
+@media (max-width: 600px) {
+    h1 {
+        font-size: 2rem;
+    }
+
+    .container {
+        padding: 1rem;
+    }
+
+    .container__input,
+    .boton,
+    .boton_limpiar,
+    .container__contrasena {
+        font-size: 0.9rem;
+        height: 2.5rem;
+    }
+
+    #check-icon {
+        font-size: 1.2rem;
+    }
+
+    .container__campo {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .container__contrasena {
+        max-width: 100%;
+    }
+}
+
+
+@media (min-width: 601px) and (max-width: 1024px) {
+    h1 {
+        font-size: 2.5rem;
+    }
+
+    .container {
+        padding: 1.5rem;
+    }
+
+    .container__input,
+    .boton,
+    .boton_limpiar,
+    .container__contrasena {
+        font-size: 1rem;
+        height: 3rem;
+    }
+
+    #check-icon {
+        font-size: 1.3rem;
+    }
+
+    .container__campo {
+        flex-direction: row;
+        gap: 1rem;
+    }
+}
+
+
+@media (min-width: 1025px) and (max-width: 1920px) {
+    h1 {
+        font-size: 3rem;
+    }
+
+    .container__input,
+    .boton,
+    .boton_limpiar,
+    .container__contrasena {
+        font-size: 1.1rem;
+        height: 3.5rem;
+    }
+
+    #check-icon {
+        font-size: 1.5rem;
+    }
+
+    .container__campo {
+        gap: 1.5rem;
+    }
+}
+
+
+@media (min-width: 1921px) {
+    h1 {
+        font-size: 3.5rem;
+    }
+
+    .container__input,
+    .boton,
+    .boton_limpiar,
+    .container__contrasena {
+        font-size: 1.2rem;
+        height: 4rem;
+    }
+
+    #check-icon {
+        font-size: 1.8rem;
+    }
+
+    .container__campo {
+        gap: 2rem;
+    }
 }
