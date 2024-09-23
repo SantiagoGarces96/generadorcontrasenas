@@ -1,77 +1,135 @@
-const cantidad = document.getElementById('cantidad');
-const botonGenerar = document.getElementById('generar');
-const contrasena = document.getElementById('contrasena');
-const botonLimpiar = document.getElementById('limpiar');
-const seguridadTexto = document.getElementById('seguridad');
-const checkIcon = document.getElementById('check-icon');
+document.addEventListener('DOMContentLoaded', () => {
+    const d = document;
+    const $cantidad = d.getElementById("cantidad");
+    const $generar = d.getElementById("generar");
+    const $contrasenia = d.getElementById("contrasena");
+    const $limpiar = d.getElementById("limpiar");
+    const $minusculas = d.getElementById("minusculas");
+    const $mayusculas = d.getElementById("mayusculas");
+    const $numeros = d.getElementById("numeros");
+    const $caracteres = d.getElementById("caracteres");
+    const $fortaleza = d.getElementById("textoFortaleza");
+    const $debil = d.getElementById("debil");
+    const $medioDebil = d.getElementById("medioDebil");
+    const $medio = d.getElementById("medio");
+    const $medioFuerte = d.getElementById("medioFuerte");
+    const $fuerte = d.getElementById("fuerte");
 
-const cadenaCaracteres = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()';
+    const cadenaMinusculas = "abcdefghijklmnopqrstuvwxyz";
+    const cadenaMayusculas = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    const cadenaNumeros = "0123456789";
+    const cadenaCaracteres = "#$%&_()^*";
 
-const generar = () => {
-    const numeroDigitado = parseInt(cantidad.value, 10);
 
-    if (isNaN(numeroDigitado) || numeroDigitado < 8) {
-        8
-        alert("La cantidad de caracteres debe ser un número mayor o igual a 8");
-        return;
+    function generarContrasena() {
+        const numeroR = parseInt($cantidad.value);
+
+
+        if (isNaN(numeroR) || numeroR < 8 || numeroR > 128) {
+            alert("El número de caracteres debe estar entre 8 y 128.");
+            return;
+        }
+
+        const arrayCadenas = [];
+        if ($minusculas.checked) arrayCadenas.push(cadenaMinusculas);
+        if ($mayusculas.checked) arrayCadenas.push(cadenaMayusculas);
+        if ($numeros.checked) arrayCadenas.push(cadenaNumeros);
+        if ($caracteres.checked) arrayCadenas.push(cadenaCaracteres);
+
+        if (arrayCadenas.length === 0) {
+            alert("Debes seleccionar al menos una opción de los requerimientos.");
+            return;
+        }
+
+        let contrasenia = "";
+
+
+        arrayCadenas.forEach(element => {
+            const caracter = element[Math.floor(Math.random() * element.length)];
+            contrasenia += caracter;
+        });
+
+
+        const caracteresDisponibles = arrayCadenas.join('');
+        for (let i = contrasenia.length; i < numeroR; i++) {
+            const caracter = caracteresDisponibles[Math.floor(Math.random() * caracteresDisponibles.length)];
+            contrasenia += caracter;
+        }
+
+
+        contrasenia = mezclarCadena(contrasenia);
+        $contrasenia.value = contrasenia;
+
+
+        evaluarFortaleza(arrayCadenas.length, numeroR);
     }
 
-    let password = '';
-    for (let i = 0; i < numeroDigitado; i++) {
-        const caracterAleatorio = cadenaCaracteres.charAt(Math.floor(Math.random() * cadenaCaracteres.length));
-        password += caracterAleatorio;
+
+    function mezclarCadena(cadena) {
+        return cadena.split('').sort(() => Math.random() - 0.5).join('');
     }
 
-    contrasena.value = password;
-    verificarSeguridad(password);
-    mostrarCheck();
-};
+    function evaluarFortaleza(cantidadTipos, longitud) {
+        let fortaleza = "";
+        let colorBarras = {
+            debil: "gray",
+            medioDebil: "gray",
+            medio: "gray",
+            medioFuerte: "gray",
+            fuerte: "gray"
+        };
+
+        if (cantidadTipos === 1) {
+            fortaleza = longitud < 11 ? "Contraseña débil" : "Contraseña media débil";
+            colorBarras.debil = longitud < 11 ? "red" : "orange";
+            if (longitud >= 11) colorBarras.medioDebil = "orange";
+        } else if (cantidadTipos === 2) {
+            fortaleza = longitud < 11 ? "Contraseña media débil" : "Contraseña media";
+            colorBarras.debil = "orange";
+            colorBarras.medioDebil = "orange";
+            if (longitud >= 11) colorBarras.medio = "yellow";
+        } else if (cantidadTipos === 3) {
+            fortaleza = longitud < 11 ? "Contraseña media" : "Contraseña media fuerte";
+            colorBarras.debil = "yellow";
+            colorBarras.medioDebil = "yellow";
+            colorBarras.medio = "yellow";
+            if (longitud >= 11) colorBarras.medioFuerte = "lightgreen";
+        } else if (cantidadTipos === 4) {
+            fortaleza = longitud < 11 ? "Contraseña media fuerte" : "Contraseña fuerte";
+            colorBarras.debil = "lightgreen";
+            colorBarras.medioDebil = "lightgreen";
+            colorBarras.medio = "lightgreen";
+            colorBarras.medioFuerte = "lightgreen";
+            if (longitud >= 11) colorBarras.fuerte = "green";
+        }
+
+        $fortaleza.textContent = `Fortaleza: ${fortaleza}`;
 
 
-const limpiar = () => {
-    contrasena.value = '';
-    cantidad.value = '';
-    seguridadTexto.textContent = '';
-    seguridadTexto.classList.remove('seguridad-fuerte', 'seguridad-media', 'seguridad-debil');
-    ocultarCheck();
-};
-const verificarSeguridad = (password) => {
-    let seguridad = 'Débil';
-    let claseSeguridad = 'seguridad-debil';
-
-    const tieneMayuscula = /[A-Z]/.test(password);
-    const tieneMinuscula = /[a-z]/.test(password);
-    const tieneNumero = /\d/.test(password);
-    const tieneCaracterEspecial = /[!@#$%^&*()]/.test(password);
-    const esLarga = password.length >= 9;
-
-    if (tieneMayuscula && tieneMinuscula && tieneNumero && tieneCaracterEspecial && esLarga) {
-        seguridad = 'Fuerte';
-        claseSeguridad = 'seguridad-fuerte';
-    } else if ((tieneMayuscula || tieneMinuscula) && tieneNumero && esLarga) {
-        seguridad = 'Media';
-        claseSeguridad = 'seguridad-media';
+        $debil.style.backgroundColor = colorBarras.debil;
+        $medioDebil.style.backgroundColor = colorBarras.medioDebil;
+        $medio.style.backgroundColor = colorBarras.medio;
+        $medioFuerte.style.backgroundColor = colorBarras.medioFuerte;
+        $fuerte.style.backgroundColor = colorBarras.fuerte;
     }
 
-    seguridadTexto.textContent = `Seguridad de la contraseña: ${seguridad}`;
 
-    seguridadTexto.classList.remove('seguridad-fuerte', 'seguridad-media', 'seguridad-debil');
+    function limpiarCampos() {
+        $cantidad.value = "";
+        $contrasenia.value = "";
+        $minusculas.checked = false;
+        $mayusculas.checked = false;
+        $numeros.checked = false;
+        $caracteres.checked = false;
+        $fortaleza.textContent = "Fortaleza: ";
+        $debil.style.backgroundColor = "gray";
+        $medioDebil.style.backgroundColor = "gray";
+        $medio.style.backgroundColor = "gray";
+        $medioFuerte.style.backgroundColor = "gray";
+        $fuerte.style.backgroundColor = "gray";
+    }
 
-    seguridadTexto.classList.add(claseSeguridad);
-};
 
-const mostrarCheck = () => {
-    checkIcon.style.display = 'inline-block';
-    setTimeout(() => {
-        checkIcon.style.display = 'none';
-    }, 3000);
-};
-
-const ocultarCheck = () => {
-    checkIcon.style.display = 'none';
-};
-
-botonGenerar.addEventListener('click', generar);
-botonLimpiar.addEventListener('click', limpiar);
-
-document.addEventListener('DOMContentLoaded', ocultarCheck);
+    $generar.addEventListener("click", generarContrasena);
+    $limpiar.addEventListener("click", limpiarCampos);
+});
